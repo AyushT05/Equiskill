@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Coursecreate from "./Coursecreate";
-import { Link } from "lucide-react";
+import Link from "next/link"; // Ensure this is the correct import for your Link component
 import { db } from "@/lib/db";
 
 const CoursesPage = async () => {
@@ -19,14 +19,16 @@ const CoursesPage = async () => {
     orderBy: {
       createdAt: "desc"
     }
-  })
+  });
 
   return (
     <div className="px-6 py-4">
       <Coursecreate />
       <div className="mt-10">
         {courses.map(course => 
-          <Link href={`/instructor/courses/${course.id}/basic`}>{course.title}</Link>
+          <Link key={course.id} href={`/instructor/courses/${course.id}/basic`}>
+            {course.title}
+          </Link>
         )}
       </div>
     </div>

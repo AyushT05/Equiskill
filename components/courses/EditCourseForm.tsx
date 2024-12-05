@@ -16,6 +16,9 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import RichEditor from "@/components/custom/RichEditor"
+import { ComboBox } from "../custom/ComboBox"
+import FileUpload from "../custom/FileUpload"
+import Link from "next/link"
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -26,7 +29,7 @@ const formSchema = z.object({
   categoryId: z.string().min(1, {
     message: "Category is required",
   }),
-  subcategoryId: z.string().min(1, {
+  subCategoryId: z.string().min(1, {
     message: "Sub-category is required",
   }),
   levelId: z.string().optional(),
@@ -37,9 +40,15 @@ const formSchema = z.object({
 
 interface EditCourseFormProps {
   course: Course
+  categories: {
+    label: string
+    value: string
+    subCategories: { label: string, value: string }[]
+  }[];
+  levels: { label: string, value: string }[];
 }
 
-const EditCourseForm = ({ course }: EditCourseFormProps) => {
+const EditCourseForm = ({ course, categories, levels }: EditCourseFormProps) => {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -48,7 +57,7 @@ const EditCourseForm = ({ course }: EditCourseFormProps) => {
       subtitle: course.subtitle || "",
       description: course.description || "",
       categoryId: course.categoryId,
-      subcategoryId: course.subCategoryId,
+      subCategoryId: course.subCategoryId,
       levelId: course.levelId || "",
       imageUrl: course.imageUrl || "",
       price: course.price || undefined,
@@ -113,7 +122,112 @@ const EditCourseForm = ({ course }: EditCourseFormProps) => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+
+        <div className="flex flex-wrap gap-10">
+          <FormField
+            control={form.control}
+            name="categoryId"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Category</FormLabel>
+                <FormControl>
+                  <ComboBox options={categories} {...field} />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="subCategoryId"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Subcategory</FormLabel>
+                <FormControl>
+                  <ComboBox
+                    options={
+                      categories.find(
+                        (category) =>
+                          category.value === form.watch("categoryId")
+                      )?.subCategories || []
+                    }
+                    {...field}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="levelId"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>
+                  Level <span className="text-red-500">*</span>
+                </FormLabel>
+                <FormControl>
+                  <ComboBox options={levels} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+
+        </div>
+        <FormField
+          control={form.control}
+          name="imageUrl"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>
+                Couse Banner <span className="text-red-500">*</span>
+              </FormLabel>
+              <FormControl>
+                <FileUpload
+                  value={field.value || ""}
+                  onChange={(url) => field.onChange(url)}
+                  endpoint="courseBanner"
+
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="price"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Price <span className="text-red-500">*</span> (USD)
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  step="0.01"
+                  placeholder="29.99"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div className="flex gap-5">
+          <Link href="/instructor/courses">
+            <Button variant="outline" type="button">
+              Cancel
+            </Button>
+          </Link>
+          <Button type="submit" >Save</Button>
+        </div>
       </form>
     </Form>
   )
