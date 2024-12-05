@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { Montserrat } from "next/font/google"; // Import Montserrat font
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import ToasterProvider from "@/components/providers/ToasterProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -37,7 +38,7 @@ export default function RootLayout({
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} ${montserrat.className} antialiased`} // Apply Montserrat font here
-        >
+        > <ToasterProvider/>
           {children}
         </body>
       </html>

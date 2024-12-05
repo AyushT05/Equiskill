@@ -1,12 +1,18 @@
 "use client"
 import React from 'react';
 import styled from 'styled-components';
+import { useRouter } from 'next/navigation'; // Import useRouter from next/navigation
 
-const Coursecreate = () => {
+const CourseCreate = () => {
+  const router = useRouter(); // Initialize the router
+
+  const handleButtonClick = () => {
+    router.push('create-course'); // Redirect to /create-course
+  };
+
   return (
     <StyledWrapper>
-      <button> Create new course
-      </button>
+      <button onClick={handleButtonClick}> Create new course </button>
     </StyledWrapper>
   );
 }
@@ -40,4 +46,4 @@ const StyledWrapper = styled.div`
   }
 `;
 
-export default Coursecreate;
+export default CourseCreate;
