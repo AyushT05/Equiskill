@@ -1,10 +1,12 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
+import Mux from "@mux/mux-node";
 
-const IMAGEKIT_URL_ENDPOINT = process.env.IMAGEKIT_URL_ENDPOINT;
-const IMAGEKIT_PRIVATE_KEY = process.env.IMAGEKIT_PRIVATE_KEY;
+const { video } = new Mux({
+  tokenId: process.env.MUX_TOKEN_ID,
+  tokenSecret: process.env.MUX_TOKEN_SECRET,
+});
 
 export const POST = async (
   req: NextRequest,
@@ -18,6 +20,7 @@ export const POST = async (
     }
 
     const values = await req.json();
+
     const { courseId, sectionId } = params;
 
     const course = await db.course.findUnique({
@@ -42,47 +45,31 @@ export const POST = async (
     });
 
     if (values.videoUrl) {
-      const existingImageKitData = await db.imageKitData.findFirst({
+      const existingMuxData = await db.muxData.findFirst({
         where: {
           sectionId,
         },
       });
 
-      if (existingImageKitData) {
-        // Delete the existing video from ImageKit if needed
-        await axios.delete(`https://api.imagekit.io/v1/files/${existingImageKitData.assetUrl}`, {
-          headers: {
-            Authorization: `Basic ${Buffer.from(`${IMAGEKIT_PRIVATE_KEY}:`).toString('base64')}`,
-          },
-        });
-
-        await db.imageKitData.delete({
+      if (existingMuxData) {
+        await video.assets.delete(existingMuxData.assetId);
+        await db.muxData.delete({
           where: {
-            id: existingImageKitData.id,
+            id: existingMuxData.id,
           },
         });
       }
 
-      // Upload video to ImageKit
-      const uploadResponse = await axios.post(
-        'https://api.imagekit.io/v1/files',
-        {
-          file: values.videoUrl,
-          fileName: 'video.mp4', // Customize as needed
-        },
-        {
-          auth: {
-            username: IMAGEKIT_PRIVATE_KEY || '',
-            password: '', // No password needed for ImageKit
-          },
-        }
-      );
+      const asset = await video.assets.create({
+        input: values.videoUrl,
+        playback_policy: ["public"],
+        test: false,
+      });
 
-      const assetUrl = `${IMAGEKIT_URL_ENDPOINT}${uploadResponse.data.name}`;
-
-      await db.imageKitData.create({
+      await db.muxData.create({
         data: {
-          assetUrl,
+          assetId: asset.id,
+          playbackId: asset.playback_ids?.[0]?.id,
           sectionId,
         },
       });
@@ -95,7 +82,7 @@ export const POST = async (
   }
 };
 
-export const DELETE = async (req: NextRequest, 
+export const DELETE = async (req: NextRequest,
   { params }: { params: { courseId: string; sectionId: string } }
 ) => {
   try {
@@ -130,23 +117,17 @@ export const DELETE = async (req: NextRequest,
     }
 
     if (section.videoUrl) {
-      const existingImageKitData = await db.imageKitData.findFirst({
+      const existingMuxData = await db.muxData.findFirst({
         where: {
           sectionId,
         },
       });
 
-      if (existingImageKitData) {
-        // Delete the existing video from ImageKit
-        await axios.delete(`https://api.imagekit.io/v1/files/${existingImageKitData.assetUrl}`, {
-          headers: {
-            Authorization: `Basic ${Buffer.from(`${IMAGEKIT_PRIVATE_KEY}:`).toString('base64')}`,
-          },
-        });
-
-        await db.imageKitData.delete({
+      if (existingMuxData) {
+        await video.assets.delete(existingMuxData.assetId);
+        await db.muxData.delete({
           where: {
-            id: existingImageKitData.id,
+            id: existingMuxData.id,
           },
         });
       }
@@ -182,4 +163,4 @@ export const DELETE = async (req: NextRequest,
     console.log("[sectionId_DELETE]", err);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
-};
+}

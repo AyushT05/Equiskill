@@ -6,46 +6,128 @@ async function main() {
   try {
     const categories = [
       {
-        name: "IT & Software",
+        name: "5th Class",
         subCategories: {
           create: [
-            { name: "Web Development" },
-            { name: "Data Science" },
-            { name: "Cybersecurity" },
-            { name: "Others" },
+            { name: "Science" },
+            { name: "Mathematics" },
+            { name: "Social Studies" },
+            { name: "Language" },
           ],
         },
       },
       {
-        name: "Business",
+        name: "6th Class",
         subCategories: {
           create: [
-            { name: "E-Commerce" },
-            { name: "Marketing" },
-            { name: "Finance" },
-            { name: "Others" },
+            { name: "Science" },
+            { name: "Mathematics" },
+            { name: "History" },
+            { name: "Civics" },
+            { name: "Geography"},
+            { name: "Language"},
           ],
         },
       },
       {
-        name: "Design",
+        name: "7th Class",
         subCategories: {
           create: [
-            { name: "Graphic Design" },
-            { name: "3D & Animation" },
-            { name: "Interior Design" },
-            { name: "Others" },
+            { name: "Science" },
+            { name: "Mathematics" },
+            { name: "History" },
+            { name: "Civics" },
+            { name: "Geography"},
+            { name: "Language"},
           ],
         },
       },
       {
-        name: "Health",
+        name: "8th Class",
         subCategories: {
           create: [
-            { name: "Fitness" },
-            { name: "Yoga" },
-            { name: "Nutrition" },
-            { name: "Others" },
+            { name: "Science" },
+            { name: "Mathematics" },
+            { name: "History" },
+            { name: "Economics" },
+            { name: "Geography"},
+            { name: "Language"},
+          ],
+        },
+      },
+      {
+        name: "9th Class",
+        subCategories: {
+          create: [
+            { name: "Physics" },
+            { name: "Chemistry" },
+            { name: "Biology" },
+            { name: "Mathematics" },
+            { name: "History" },
+            { name: "Civics" },
+            { name: "Geography"},
+            { name: "Language"},
+          ],
+        },
+      },
+      {
+        name: "10th Class",
+        subCategories: {
+          create: [
+            { name: "Physics" },
+            { name: "Chemistry" },
+            { name: "Biology" },
+            { name: "Mathematics" },
+            { name: "History" },
+            { name: "Civics" },
+            { name: "Geography"},
+            { name: "Language"},
+          ],
+        },
+      },
+      {
+        name: "11th Class",
+        subCategories: {
+          create: [
+            { name: "Physics" },
+            { name: "Chemistry" },
+            { name: "Biology" },
+            { name: "Mathematics" },
+            { name: "Language"},
+            { name: "Accountancy"},
+            { name: "Economics"},
+            { name: "Business Studies"},
+            { name: "Computer Science"},
+          ],
+        },
+      },
+      
+      {
+        name: "12th Class",
+        subCategories: {
+          create: [
+            { name: "Physics" },
+            { name: "Chemistry" },
+            { name: "Biology" },
+            { name: "Mathematics" },
+            { name: "Language"},
+            { name: "Accountancy"},
+            { name: "Economics"},
+            { name: "Business Studies"},
+            { name: "Computer Science"},
+          ],
+        },
+      },
+      {
+        name: "Engineering",
+        subCategories: {
+          create: [
+            { name: "CS / IT" },
+            { name: "Electronics / Electrical" },
+            { name: "Mechanical Engineering"},
+            { name: "Civil Engineering"},
+            { name: "Automobile Engineering"},
+            { name: "Others"},
           ],
         },
       },

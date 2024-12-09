@@ -39,7 +39,7 @@ model Course {
 
 model Category {
   id            String       @id @default(uuid())
-  name          String       @unique
+  name          String       
   subCategories SubCategory[]
   courses       Course[]
 }
@@ -73,7 +73,7 @@ model Section {
   courseId String
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
-  imageKitData ImageKitData?
+  muxData MuxData?
 
   resources Resource[]
 
@@ -85,12 +85,13 @@ model Section {
   @@index([courseId])
 }
 
-
-model ImageKitData {
+model MuxData {
   id         String  @id @default(uuid())
-  assetUrl   String  // URL of the video asset on ImageKit
-  sectionId  String  @unique
-  section    Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  assetId    String
+  playbackId String?
+
+  sectionId String  @unique
+  section   Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
 
   @@index([sectionId])
 }
@@ -124,5 +125,3 @@ model Progress {
   @@index([sectionId])
   @@unique([studentId, sectionId])
 }
-
-  
