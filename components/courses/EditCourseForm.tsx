@@ -24,6 +24,7 @@ import toast from "react-hot-toast"
 import router from "next/router"
 import { usePathname, useRouter } from "next/navigation"
 import Trash from "./Trash"
+import { Loader2 } from "lucide-react"
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -71,6 +72,7 @@ const EditCourseForm = ({ course, categories, levels }: EditCourseFormProps) => 
     },
   })
 
+  const { isValid, isSubmitting } = form.formState;
   // 2. Define a submit handler.
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -100,7 +102,7 @@ const EditCourseForm = ({ course, categories, levels }: EditCourseFormProps) => 
         </div>
         <div className="flex gap-4 items-start">
           <Button variant="outline">Publish</Button>
-          <Trash/>
+          <Trash />
         </div>
       </div>
       <Form {...form}>
@@ -223,7 +225,7 @@ const EditCourseForm = ({ course, categories, levels }: EditCourseFormProps) => 
                     value={field.value || ""}
                     onChange={(url) => field.onChange(url)}
                     endpoint="courseBanner"
-
+                    page="Edit Course"
                   />
                 </FormControl>
                 <FormMessage />
@@ -257,7 +259,13 @@ const EditCourseForm = ({ course, categories, levels }: EditCourseFormProps) => 
                 Cancel
               </Button>
             </Link>
-            <Button type="submit" >Save</Button>
+            <Button type="submit" disabled={!isValid || isSubmitting}>
+              {isSubmitting ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                "Save"
+              )}
+            </Button>
           </div>
         </form>
       </Form>

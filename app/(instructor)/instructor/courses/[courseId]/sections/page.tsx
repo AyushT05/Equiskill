@@ -3,10 +3,9 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 
-const CourseCurriculumPage = async ({params}:{params:{courseId:string}}) => {
+const CourseCurriculumPage = async ({ params }: { params: { courseId: string } }) => {
     const { userId } = await auth(); // Destructure userId from the auth object
-    if(!userId)
-    {
+    if (!userId) {
         return redirect("/sign-in")
     }
 
@@ -15,14 +14,20 @@ const CourseCurriculumPage = async ({params}:{params:{courseId:string}}) => {
             id: params.courseId,
             instructorId: userId, // Use userId directly here
         },
+        include: {
+            sections: {
+                orderBy: {
+                    position: "asc",
+                },
+            },
+        },
     });
 
-    if(!course)
-    {
+    if (!course) {
         return redirect("/instructor/courses")
     }
     return (
-        <CreateSectionForm course={course}/>
+        <CreateSectionForm course={course} />
     )
 }
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { Course } from "@prisma/client";
+import { Course, Section } from "@prisma/client";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { usePathname, useRouter } from "next/navigation";
@@ -18,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input"
 import axios from "axios";
 import toast from "react-hot-toast";
+import SectionList from "@/components/sections/SectionList";
 
 const formSchema = z.object({
     title: z.string().min(2, {
@@ -28,7 +29,7 @@ const formSchema = z.object({
 
 
 
-const CreateSectionForm = ({ course }: { course: Course }) => {
+const CreateSectionForm = ({ course }: { course: Course & { sections: Section[] } }) => {
     const router = useRouter()
     const pathname = usePathname();
     const routes = [
@@ -47,19 +48,31 @@ const CreateSectionForm = ({ course }: { course: Course }) => {
     // 2. Define a submit handler.
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-          const response = await axios.post(
-            `/api/courses/${course.id}/sections`,
-            values
-          );
-          router.push(
-            `/instructor/courses/${course.id}/sections/${response.data.id}`
-          );
-          toast.success("New Section created!");
+            const response = await axios.post(
+                `/api/courses/${course.id}/sections`,
+                values
+            );
+            router.push(
+                `/instructor/courses/${course.id}/sections/${response.data.id}`
+            );
+            toast.success("New Section created!");
         } catch (err) {
-          toast.error("Something went wrong!");
-          console.log("Failed to create a new section", err);
+            toast.error("Something went wrong!");
+            console.log("Failed to create a new section", err);
         }
-      };
+    };
+
+    const onReorder = async (updateData: { id: string; position: number }[]) => {
+        try {
+            await axios.put(`/api/courses/${course.id}/sections/reorder`, {
+                list: updateData,
+            });
+            toast.success("Sections reordered successfully");
+        } catch (err) {
+            console.log("Failed to reorder sections", err);
+            toast.error("Something went wrong!");
+        }
+    };
 
     return (
         <div className="px-10 py-6">
@@ -69,6 +82,14 @@ const CreateSectionForm = ({ course }: { course: Course }) => {
                         <Button variant={pathname === route.path ? "default" : "outline"}>{route.label}</Button></Link>
                 ))}
             </div>
+
+            <SectionList
+                items={course.sections || []}
+                onReorder={onReorder}
+                onEdit={(id) =>
+                    router.push(`/instructor/courses/${course.id}/sections/${id}`)
+                }
+            />
 
             <h1 className="text-xl font-bold mt-5 ">Add new section</h1>
 
@@ -83,7 +104,7 @@ const CreateSectionForm = ({ course }: { course: Course }) => {
                                 <FormControl>
                                     <Input placeholder="Ex: Introduction to Python" {...field} />
                                 </FormControl>
-                                
+
                                 <FormMessage />
                             </FormItem>
                         )}
@@ -95,7 +116,7 @@ const CreateSectionForm = ({ course }: { course: Course }) => {
                     </div>
                 </form>
             </Form>
-            
+
         </div>
 
     )
