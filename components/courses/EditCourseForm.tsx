@@ -103,7 +103,7 @@ const EditCourseForm = ({ course, categories, levels }: EditCourseFormProps) => 
         </div>
         <div className="flex gap-4 items-start">
           <Button variant="outline">Publish</Button>
-          <Delete item="section" courseId={course.id}/>
+          <Delete item="course" courseId={course.id}/>
         </div>
       </div>
       <Form {...form}>

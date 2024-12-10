@@ -1,6 +1,12 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
+import Mux from "@mux/mux-node";
+
+const { video } = new Mux({
+  tokenId: process.env.MUX_TOKEN_ID,
+  tokenSecret: process.env.MUX_TOKEN_SECRET,
+});
 
 export const PATCH = async (req: NextRequest, { params }: { params: { courseId: string } }) => {
     try {
@@ -51,7 +57,7 @@ export const DELETE = async (
         return new NextResponse("Course not found", { status: 404 });
       }
   
-      
+
   
       await db.course.delete({
         where: { id: courseId, instructorId: userId },
