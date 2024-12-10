@@ -25,6 +25,7 @@ import router from "next/router"
 import { usePathname, useRouter } from "next/navigation"
 import Trash from "./Trash"
 import { Loader2 } from "lucide-react"
+import Delete from "../custom/Delete"
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -102,7 +103,7 @@ const EditCourseForm = ({ course, categories, levels }: EditCourseFormProps) => 
         </div>
         <div className="flex gap-4 items-start">
           <Button variant="outline">Publish</Button>
-          <Trash />
+          <Delete item="section" courseId={course.id}/>
         </div>
       </div>
       <Form {...form}>

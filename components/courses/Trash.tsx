@@ -31,7 +31,7 @@ const StyledWrapper = styled.div`
     width: 45px; /* Adjusted size */
     height: 45px; /* Adjusted size */
     border-radius: 15px;
-    background-color: #007acc; /* Default color */
+    background-color: #003cb3; /* Default color */
     cursor: pointer;
     border: 2px solid #99ccff; /* Border to match default color scheme */
     transition-duration: 0.3s;
@@ -53,7 +53,7 @@ const StyledWrapper = styled.div`
   }
 
   .bin-button:hover {
-    background-color: #003cb3; /* Hover color */
+    background-color: #007acc; /* Hover color */
   }
 
   .bin-button:active {

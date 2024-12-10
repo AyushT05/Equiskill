@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input"
 import axios from "axios";
 import toast from "react-hot-toast";
 import SectionList from "@/components/sections/SectionList";
+import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
     title: z.string().min(2, {
@@ -44,6 +45,8 @@ const CreateSectionForm = ({ course }: { course: Course & { sections: Section[] 
             title: "",
         },
     })
+
+    const { isValid, isSubmitting } = form.formState;
 
     // 2. Define a submit handler.
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -111,7 +114,13 @@ const CreateSectionForm = ({ course }: { course: Course & { sections: Section[] 
                     />
                     <div className="flex gap-5">
                         <Link href={`/instructor/courses/${course.id}/basic`}><Button variant="outline" type="button">Cancel</Button></Link>
-                        <Button type="submit">Create</Button>
+                        <Button type="submit" disabled={!isValid || isSubmitting}>
+              {isSubmitting ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                "Create"
+              )}
+            </Button>
 
                     </div>
                 </form>

@@ -164,3 +164,4 @@ export const DELETE = async (req: NextRequest,
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
+

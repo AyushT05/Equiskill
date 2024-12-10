@@ -27,6 +27,7 @@ import RichEditor from "@/components/custom/RichEditor";
 import FileUpload from "../custom/FileUpload";
 import { Switch } from "@/components/ui/switch";
 import ResourceForm from "@/components/sections/ResourceForm";
+import Delete from "@/components/custom/Delete";
 
 
 const formSchema = z.object({
@@ -81,7 +82,7 @@ const EditSectionForm = ({
 
   return (
     <>
-      <div className="flex flex-col gap-2 sm:flex-row sm:justify-between mb-7">
+      <div className="flex justify-between items-center mb-7">
         <Link href={`/instructor/courses/${courseId}/sections`}>
           <Button variant="outline" className="text-sm font-medium">
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -89,7 +90,10 @@ const EditSectionForm = ({
           </Button>
         </Link>
 
-  
+        <div className="flex gap-5 items-start">
+          <Button variant="outline">Publish</Button>
+          <Delete item="section" courseId={courseId} sectionId={section.id} />
+        </div>
       </div>
 
       <h1 className="text-xl font-bold">Section Details</h1>
@@ -139,8 +143,8 @@ const EditSectionForm = ({
           />
 
           {section.videoUrl && (
-            <div className="my-5">
-              <video controls src={section.videoUrl } title="Video Preview"></video>
+            <div className="my-5 h-30 w-30">
+              <video controls src={section.videoUrl} title="Video Preview"></video>
             </div>
           )}
           <FormField
