@@ -2,6 +2,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/navigation'; // Import useRouter from next/navigation
+import { Button } from '@/components/ui/button';
 
 const CourseCreate = () => {
   const router = useRouter(); // Initialize the router
@@ -12,13 +13,13 @@ const CourseCreate = () => {
 
   return (
     <StyledWrapper>
-      <button onClick={handleButtonClick}> Create new course </button>
+      <Button onClick={handleButtonClick}> Create new course </Button>
     </StyledWrapper>
   );
 }
 
 const StyledWrapper = styled.div`
-  button {
+  Button {
     padding: 1.3em 3em;
     font-size: 12px;
     text-transform: uppercase;
@@ -34,14 +35,14 @@ const StyledWrapper = styled.div`
     outline: none;
   }
 
-  button:hover {
+  Button:hover {
     background-color: #003cb3; /* Changed hover color to #003cb3 */
     box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
     color: #fff;
     transform: translateY(-7px);
   }
 
-  button:active {
+  Button:active {
     transform: translateY(-1px);
   }
 `;

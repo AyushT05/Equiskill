@@ -3,6 +3,9 @@ import { redirect } from "next/navigation";
 import Coursecreate from "./Coursecreate";
 import Link from "next/link"; // Ensure this is the correct import for your Link component
 import { db } from "@/lib/db";
+import { DataTable } from "@/components/custom/DataTable";
+import { columns } from "@/components/courses/Columns";
+
 
 const CoursesPage = async () => {
   const { userId } = await auth();
@@ -24,14 +27,9 @@ const CoursesPage = async () => {
   return (
     <div className="px-6 py-4">
       <Coursecreate />
-      <div className="mt-10">
-        {courses.map(course => 
-          <Link key={course.id} href={`/instructor/courses/${course.id}/basic`}>
-            {course.title}
-          </Link>
-        )}
+      <div className="mt-5"><DataTable columns={columns} data={courses} /></div>
       </div>
-    </div>
+    
   );
 };
 

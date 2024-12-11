@@ -26,6 +26,7 @@ import { usePathname, useRouter } from "next/navigation"
 import Trash from "./Trash"
 import { Loader2 } from "lucide-react"
 import Delete from "../custom/Delete"
+import PublishButton from "../custom/PublishButton"
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -53,9 +54,10 @@ interface EditCourseFormProps {
     subCategories: { label: string, value: string }[]
   }[];
   levels: { label: string, value: string }[];
+  isCompleted: boolean;
 }
 
-const EditCourseForm = ({ course, categories, levels }: EditCourseFormProps) => {
+const EditCourseForm = ({ course, categories, levels, isCompleted }: EditCourseFormProps) => {
   const router = useRouter();
   const pathname = usePathname();
   // 1. Define your form.
@@ -102,7 +104,12 @@ const EditCourseForm = ({ course, categories, levels }: EditCourseFormProps) => 
           ))}
         </div>
         <div className="flex gap-4 items-start">
-          <Button variant="outline">Publish</Button>
+        <PublishButton
+            disabled={!isCompleted}
+            courseId={course.id}
+            isPublished={course.isPublished}
+            page="Course"
+          />
           <Delete item="course" courseId={course.id}/>
         </div>
       </div>
@@ -113,7 +120,7 @@ const EditCourseForm = ({ course, categories, levels }: EditCourseFormProps) => 
             name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Title</FormLabel>
+                <FormLabel>Title<span className="text-red-500">*</span></FormLabel>
                 <FormControl>
                   <Input placeholder="Ex: Web Development for Beginners" {...field} />
                 </FormControl>
@@ -163,7 +170,7 @@ const EditCourseForm = ({ course, categories, levels }: EditCourseFormProps) => 
               name="categoryId"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Category</FormLabel>
+                  <FormLabel>Category <span className="text-red-500">*</span></FormLabel>
                   <FormControl>
                     <ComboBox options={categories} {...field} />
                   </FormControl>
@@ -177,7 +184,7 @@ const EditCourseForm = ({ course, categories, levels }: EditCourseFormProps) => 
               name="subCategoryId"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Subcategory</FormLabel>
+                  <FormLabel>Subcategory <span className="text-red-500">*</span></FormLabel>
                   <FormControl>
                     <ComboBox
                       options={
