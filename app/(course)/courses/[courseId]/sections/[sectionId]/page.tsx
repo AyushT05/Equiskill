@@ -1,4 +1,4 @@
-
+import SectionsDetails from "@/components/sections/SectionsDetails";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { Resource } from "@prisma/client";
@@ -7,9 +7,9 @@ import { redirect } from "next/navigation";
 const SectionDetailsPage = async ({
   params,
 }: {
-  params: { courseId: string; sectionId: string };
+  params: Promise<{ courseId: string; sectionId: string }>;
 }) => {
-  const { courseId, sectionId } = params;
+  const { courseId, sectionId } = await params;
   const { userId } = await auth();
 
   if (!userId) {
@@ -55,10 +55,8 @@ const SectionDetailsPage = async ({
     },
   });
 
-  let muxData = null;
+
   let resources: Resource[] = [];
-
-
 
   if (purchase) {
     resources = await db.resource.findMany({
@@ -77,6 +75,16 @@ const SectionDetailsPage = async ({
     },
   });
 
+  return (
+    <SectionsDetails
+      course={course}
+      section={section}
+      purchase={purchase}
+      
+      resources={resources}
+      progress={progress}
+    />
+  );
 };
 
 export default SectionDetailsPage;

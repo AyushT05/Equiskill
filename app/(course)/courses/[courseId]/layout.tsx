@@ -7,11 +7,15 @@ import { redirect } from "next/navigation";
 
 const CourseDetailsLayout = async ({ children, params }: { children: React.ReactNode, params: { courseId: string } }) => {
   const userId = await auth();
+  const { courseId } = params;
+// Use courseId wherever required
+
+
   if (!userId) {
     return redirect("/sign-in");
   }
   const course = await db.course.findUnique({
-    where: { id: params.courseId },
+    where: { id: courseId },
     include: {
       sections: {
         where: {
@@ -26,19 +30,16 @@ const CourseDetailsLayout = async ({ children, params }: { children: React.React
   if (!course) {
     return redirect("/");
   }
-  return <div className="h-full flex flex-col">
-    <TopBar />
-    <div className="flex-1 flex">
-      <CourseSideBar course={course} studentId="userId" />
-      <div className="flex-1">{children}</div>
+  return (
+    <div className="h-full flex flex-col">
+      <TopBar />
+      <div className="flex-1 flex">
+        <CourseSideBar course={course} studentId="userId" />
+        <div className="flex-1">{children}</div>
       </div>
     </div>
-    return (
-    <div>
+  );
+};
 
-    </div>
-    )
-}
-
-    export default CourseDetailsLayout
+export default CourseDetailsLayout
 

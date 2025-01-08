@@ -1,28 +1,24 @@
+import Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 
 import { db } from "@/lib/db";
-import Razorpay from "razorpay"; // Import Razorpay package
-
-// Initialize Razorpay instance with credentials
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID!,
-  key_secret: process.env.RAZORPAY_KEY_SECRET!,
-});
+import { stripe } from "@/lib/stripe";
 
 export const POST = async (
   req: NextRequest,
-  { params }: { params: { courseId: string } }
+  { params }: { params: Promise<{ courseId: string }> } // Updated params type
 ) => {
   try {
     const user = await currentUser();
+    const { courseId } = await params; 
 
     if (!user || !user.id || !user.emailAddresses?.[0]?.emailAddress) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const course = await db.course.findUnique({
-      where: { id: params.courseId, isPublished: true },
+      where: { id: courseId, isPublished: true },
     });
 
     if (!course) {
@@ -39,29 +35,55 @@ export const POST = async (
       return new NextResponse("Course Already Purchased", { status: 400 });
     }
 
-    // Prepare the order data for Razorpay
-    const options = {
-      amount: Math.round(course.price! * 100), // Amount in paise
-      currency: "INR",
-      receipt: `receipt_${new Date().getTime()}`, // Unique receipt ID
-      notes: {
+    const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [
+      {
+        quantity: 1,
+        price_data: {
+          currency: "inr",
+          product_data: {
+            name: course.title,
+          },
+          unit_amount: Math.round(course.price! * 100),
+        },
+      }
+    ]
+
+    let stripeCustomer = await db.stripeCustomer.findUnique({
+      where: { customerId: user.id },
+      select: { stripeCustomerId: true },
+    });
+
+    if (!stripeCustomer) {
+      const customer = await stripe.customers.create({
+        email: user.emailAddresses[0].emailAddress,
+      });
+
+      stripeCustomer = await db.stripeCustomer.create({
+        data: {
+          customerId: user.id,
+          stripeCustomerId: customer.id,
+        },
+      });
+    }
+
+    const session = await stripe.checkout.sessions.create({
+      customer: stripeCustomer.stripeCustomerId,
+      payment_method_types: ["card"],
+      line_items,
+      mode: "payment",
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/courses/${course.id}/overview?success=true`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/courses/${course.id}/overview?canceled=true`,
+      metadata: {
         courseId: course.id,
         customerId: user.id,
-      },
-    };
-
-    // Create an order with Razorpay
-    const order = await razorpay.orders.create(options);
-
-    // Return the order details to the client
-    return NextResponse.json({ 
-      id: order.id, 
-      currency: order.currency, 
-      amount: order.amount 
+      }
     });
-    
+    return NextResponse.json({ url: session.url })
   } catch (err) {
-    console.log("[courseId_checkout_POST]", err);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    console.error("[courseId_checkout_POST]", err);
+    return NextResponse.json(
+      { error: "Internal Server Error" }, 
+      { status: 500 }
+    );
   }
 };
