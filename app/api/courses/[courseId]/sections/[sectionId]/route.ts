@@ -10,7 +10,7 @@ const { video } = new Mux({
 
 export const POST = async (
   req: NextRequest,
-  { params }: { params: { courseId: string; sectionId: string } }
+  { params }: { params: Promise<{ courseId: string; sectionId: string }> }
 ) => {
   try {
     const { userId } = await auth();
@@ -21,7 +21,7 @@ export const POST = async (
 
     const values = await req.json();
 
-    const { courseId, sectionId } = params;
+    const { courseId, sectionId } = await params;
 
     const course = await db.course.findUnique({
       where: {
@@ -51,14 +51,7 @@ export const POST = async (
         },
       });
 
-      if (existingMuxData) {
-        await video.assets.delete(existingMuxData.assetId);
-        await db.muxData.delete({
-          where: {
-            id: existingMuxData.id,
-          },
-        });
-      }
+      
 
       const asset = await video.assets.create({
         input: values.videoUrl,
@@ -66,13 +59,6 @@ export const POST = async (
         test: false,
       });
 
-      await db.muxData.create({
-        data: {
-          assetId: asset.id,
-          playbackId: asset.playback_ids?.[0]?.id,
-          sectionId,
-        },
-      });
     }
 
     return NextResponse.json(section, { status: 200 });
@@ -83,7 +69,7 @@ export const POST = async (
 };
 
 export const DELETE = async (req: NextRequest,
-  { params }: { params: { courseId: string; sectionId: string } }
+  { params }: { params: Promise<{ courseId: string; sectionId: string }> }
 ) => {
   try {
     const { userId } = await auth();
@@ -92,7 +78,7 @@ export const DELETE = async (req: NextRequest,
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { courseId, sectionId } = params;
+    const { courseId, sectionId } = await params;
 
     const course = await db.course.findUnique({
       where: {
@@ -123,14 +109,7 @@ export const DELETE = async (req: NextRequest,
         },
       });
 
-      if (existingMuxData) {
-        await video.assets.delete(existingMuxData.assetId);
-        await db.muxData.delete({
-          where: {
-            id: existingMuxData.id,
-          },
-        });
-      }
+      
     }
 
     await db.section.delete({

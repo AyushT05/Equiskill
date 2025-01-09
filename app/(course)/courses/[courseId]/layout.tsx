@@ -5,9 +5,9 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 
-const CourseDetailsLayout = async ({ children, params }: { children: React.ReactNode, params: { courseId: string } }) => {
+const CourseDetailsLayout = async ({ children, params }: { children: React.ReactNode, params: Promise<{ courseId: string }> }) => {
   const userId = await auth();
-  const { courseId } = params;
+  const { courseId } = await params;
 // Use courseId wherever required
 
 

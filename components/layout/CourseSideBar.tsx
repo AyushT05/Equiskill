@@ -40,14 +40,18 @@ const CourseSideBar = async ({ course, studentId }: CourseSideBarProps) => {
     }
   });
 
-  const progressPercentage = (completedSections / publishedSectionIds.length) * 100;
+  const progressPercentage =
+  publishedSectionIds.length > 0
+    ? (completedSections / publishedSectionIds.length) * 100
+    : 0;
+
 
   return (
     <div className="hidden md:flex flex-col w-64 border-r shadow-md px-3 my-4 text-sm font-medium">
       <h1 className="text-lg font-bold text-center mb-4">{course.title}</h1>
       {purchase && (
         <div>
-          <Progress value={progressPercentage} className="h-2" />
+          <Progress value={progressPercentage} className="h-2 border border-red-500" />
           <p className="text-xs">{Math.round(progressPercentage)}% completed</p>
         </div>
       )}

@@ -58,6 +58,8 @@ const SectionDetailsPage = async ({
 
   let resources: Resource[] = [];
 
+
+
   if (purchase) {
     resources = await db.resource.findMany({
       where: {

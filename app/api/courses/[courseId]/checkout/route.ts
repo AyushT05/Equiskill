@@ -11,7 +11,7 @@ export const POST = async (
 ) => {
   try {
     const user = await currentUser();
-    const { courseId } = await params; 
+    const { courseId } = await params;
 
     if (!user || !user.id || !user.emailAddresses?.[0]?.emailAddress) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -76,13 +76,15 @@ export const POST = async (
       metadata: {
         courseId: course.id,
         customerId: user.id,
-      }
+      },
+      billing_address_collection: "required" // Collects billing address
+      
     });
     return NextResponse.json({ url: session.url })
   } catch (err) {
     console.error("[courseId_checkout_POST]", err);
     return NextResponse.json(
-      { error: "Internal Server Error" }, 
+      { error: "Internal Server Error" },
       { status: 500 }
     );
   }
