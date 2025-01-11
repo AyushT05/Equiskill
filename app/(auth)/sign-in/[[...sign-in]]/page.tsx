@@ -6,12 +6,15 @@ export default function Page() {
       <div className="flex w-full max-w-6xl shadow-lg bg-white rounded-lg overflow-hidden">
         {/* Left Division: Image */}
         <div className="hidden md:flex md:w-1/2 bg-blue-600 items-center justify-center">
-          <img
-            src="/canva.gif" // Replace with your image path
-            alt="Sign In Illustration"
-            className="object-cover h-full w-full"
+          <video
+            src="/signin.mp4" // Replace with your video path
+            autoPlay
+            muted
+            playsInline
+            className="object-cover h-full w-full pointer-events-none"
           />
         </div>
+
 
         {/* Right Division: Sign-In Form */}
         <div className="flex flex-col items-center justify-center w-full md:w-1/2 p-8">

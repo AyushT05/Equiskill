@@ -10,11 +10,22 @@ const CourseCard = async ({ course }: { course: Course }) => {
   const instructor = await client.users.getUser(course.instructorId);
 
   let level;
+  let category;
 
+  // Fetch Level
   if (course.levelId) {
     level = await db.level.findUnique({
       where: {
         id: course.levelId,
+      },
+    });
+  }
+
+  // Fetch Category
+  if (course.categoryId) {
+    category = await db.category.findUnique({
+      where: {
+        id: course.categoryId,
       },
     });
   }
@@ -67,9 +78,10 @@ const CourseCard = async ({ course }: { course: Course }) => {
           >
             ₹ {course.price}
           </p>
+          {/* Display Category Name */}
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <Album size={20} />
-            <p>{level?.name || "N/A"}</p>
+            <p>{category?.name || "Uncategorized"}</p>
           </div>
         </div>
       </div>
