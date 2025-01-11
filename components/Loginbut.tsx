@@ -11,37 +11,46 @@ const Loginbut = () => {
 
 const StyledWrapper = styled.div`
   button {
-    border: none;
-    color: #fff;
-    background-image: linear-gradient(30deg, #0400ff, #4ce3f7);
-    border-radius: 50px; /* Set to a high value for fully rounded corners */
-    background-size: 100% auto;
+    --color: #003cb3;
     font-family: inherit;
+    display: inline-block;
+    width: 6em;
+    height: 2.6em;
+    line-height: 2.5em;
+    overflow: hidden;
+    cursor: pointer;
+    margin: 20px;
     font-size: 17px;
-    padding: 0.6em 1.5em; /* Adjust padding for button size */
-    cursor: pointer; /* Change cursor to pointer */
+    z-index: 1;
+    color: var(--color);
+    border: 2px solid var(--color);
+    border-radius: 6px;
+    position: relative;
+  }
+
+  button::before {
+    position: absolute;
+    content: "";
+    background: var(--color);
+    width: 150px;
+    height: 200px;
+    z-index: -1;
+    border-radius: 50%;
   }
 
   button:hover {
-    background-position: right center;
-    background-size: 200% auto;
-    -webkit-animation: pulse 2s infinite;
-    animation: pulse512 1.5s infinite;
+    color: white;
   }
 
-  @keyframes pulse512 {
-    0% {
-      box-shadow: 0 0 0 0 #05bada66;
-    }
-
-    70% {
-      box-shadow: 0 0 0 10px rgb(218 103 68 / 0%);
-    }
-
-    100% {
-      box-shadow: 0 0 0 0 rgb(218 103 68 / 0%);
-    }
+  button:before {
+    top: 100%;
+    left: 100%;
+    transition: 0.3s all;
   }
-`;
+
+  button:hover::before {
+    top: -30px;
+    left: -30px;
+  }`;
 
 export default Loginbut;

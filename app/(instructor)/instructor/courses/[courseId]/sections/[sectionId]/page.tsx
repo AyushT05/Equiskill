@@ -6,14 +6,15 @@ import { redirect } from "next/navigation";
 
 
 
-const SectionDetailsPage = async ({ params }: { params: { courseId: string; sectionId: string } }) => {
+const SectionDetailsPage = async ({ params }: { params: Promise<{ courseId: string; sectionId: string }> }) => {
   const { userId } = await auth();
+  const { courseId, sectionId } = await params;
   if (!userId) {
     return redirect("/sign-in")
   }
   const course = await db.course.findUnique({
     where: {
-      id: params.courseId,
+      id: courseId,
       instructorId: userId,
     },
   });
@@ -22,8 +23,8 @@ const SectionDetailsPage = async ({ params }: { params: { courseId: string; sect
   }
   const section = await db.section.findUnique({
     where: {
-      id: params.sectionId,
-      courseId: params.courseId
+      id: sectionId,
+      courseId: courseId
     },
     include: {
       muxData: true,
@@ -31,7 +32,7 @@ const SectionDetailsPage = async ({ params }: { params: { courseId: string; sect
     },
   });
   if (!section) {
-    return redirect(`/instructor/courses/${params.courseId}/sections`)
+    return redirect(`/instructor/courses/${courseId}/sections`)
   }
   const requiredFields = [section.title , section.description , section.videoUrl];
   const requiredFieldsCount = requiredFields.length;
@@ -41,7 +42,7 @@ const SectionDetailsPage = async ({ params }: { params: { courseId: string; sect
   return (
     <div className="px-10">
       <AlertBanner isCompleted={isCompleted} requiredFieldsCount={requiredFieldsCount} missingFieldsCount={missingFieldsCount} />
-      <EditSectionForm section={section} courseId={params.courseId} isCompleted={isCompleted} />
+      <EditSectionForm section={section} courseId={courseId} isCompleted={isCompleted} />
     </div>
   )
 }

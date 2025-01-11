@@ -31,45 +31,53 @@ const CourseSideBar = async ({ course, studentId }: CourseSideBarProps) => {
   });
 
   const completedSections = await db.progress.count({
-    where:{
+    where: {
       studentId,
       sectionId: {
         in: publishedSectionIds,
       },
       isCompleted: true,
-    }
+    },
   });
 
   const progressPercentage =
-  publishedSectionIds.length > 0
-    ? (completedSections / publishedSectionIds.length) * 100
-    : 0;
-
+    publishedSectionIds.length > 0
+      ? (completedSections / publishedSectionIds.length) * 100
+      : 0;
 
   return (
-    <div className="hidden md:flex flex-col w-64 border-r shadow-md px-3 my-4 text-sm font-medium">
-      <h1 className="text-lg font-bold text-center mb-4">{course.title}</h1>
-      {purchase && (
-        <div>
-          <Progress value={progressPercentage} className="h-2 border border-red-500" />
-          <p className="text-xs">{Math.round(progressPercentage)}% completed</p>
-        </div>
-      )}
-      <Link
-        href={`/courses/${course.id}/overview`}
-        className={`p-3 rounded-lg hover:bg-[#cce6ff] mt-4`}
-      >
-        Overview
-      </Link>
-      {publishedSections.map((section) => (
+    <div className="hidden md:flex flex-col w-64 bg-white border-r shadow-lg rounded-lg p-4">
+      {/* Sidebar Header */}
+      <div className="mb-6 text-center">
+        <h1 className="text-xl font-bold text-gray-800">{course.title}</h1>
+        {purchase && (
+          <div className="mt-3">
+            <Progress value={progressPercentage} className="h-2 rounded-full bg-gray-200" />
+            <p className="text-sm text-gray-500 mt-2">
+              {Math.round(progressPercentage)}% completed
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Links */}
+      <nav className="flex flex-col gap-2">
         <Link
-          key={section.id}
-          href={`/courses/${course.id}/sections/${section.id}`}
-          className="p-3 rounded-lg hover:bg-[#cce6ff] mt-4"
+          href={`/courses/${course.id}/overview`}
+          className="p-3 rounded-md bg-blue-50 hover:bg-blue-100 text-blue-800 font-medium transition-colors duration-200"
         >
-          {section.title}
+          Overview
         </Link>
-      ))}
+        {publishedSections.map((section) => (
+          <Link
+            key={section.id}
+            href={`/courses/${course.id}/sections/${section.id}`}
+            className="p-3 rounded-md bg-gray-50 hover:bg-gray-100 text-gray-700 font-medium transition-colors duration-200"
+          >
+            {section.title}
+          </Link>
+        ))}
+      </nav>
     </div>
   );
 };

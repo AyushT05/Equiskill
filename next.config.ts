@@ -4,8 +4,13 @@ const nextConfig: NextConfig = {
   /* config options here */
   images: {
     remotePatterns: [
-      { hostname: 'utfs.io'},
-      { hostname: 'img.clerk.com'}
+      {
+        protocol: 'https',
+        hostname: '**',
+        pathname: '/f/**', // Specifically match file URLs
+      },
+      { hostname: 'img.clerk.com'},
+      
     ]
   }
 };
