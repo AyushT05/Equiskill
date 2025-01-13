@@ -82,7 +82,6 @@ const SectionDetailsPage = async ({
       course={course}
       section={section}
       purchase={purchase}
-      
       resources={resources}
       progress={progress}
     />

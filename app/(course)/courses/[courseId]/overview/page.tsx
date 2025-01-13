@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
 import ReadText from "@/components/custom/ReadText";
+import SectionMenu from "@/components/layout/SectionMenu";
 
 const CourseOverview = async ({ params }: { params: Promise<{ courseId: string }> }) => {
   const { courseId } = await params;
@@ -43,6 +44,7 @@ const CourseOverview = async ({ params }: { params: Promise<{ courseId: string }
       <div className="flex flex-col md:flex-row gap-6">
         {/* Left Column: Course Image */}
         <div className="flex-shrink-0">
+          <SectionMenu course={course}/>
           <Image
             src={course.imageUrl || "/image_placeholder.webp"}
             alt={course.title}

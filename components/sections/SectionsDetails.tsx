@@ -8,6 +8,7 @@ import { File, Loader2, Lock } from "lucide-react";
 import ReadText from "../custom/ReadText";
 import Link from "next/link";
 import ProgressButton from "./ProgressButton";
+import SectionMenu from "../layout/SectionMenu";
 
 interface SectionsDetailsProps {
   course: Course & { sections: Section[] };
@@ -45,6 +46,7 @@ const SectionsDetails = ({
       {/* Section Title and Actions */}
       <div className="flex flex-col md:flex-row justify-between items-center border-b pb-4 mb-6">
         <h1 className="text-3xl font-bold text-gray-800">{section.title}</h1>
+        <SectionMenu course={course} />
         {!purchase ? (
           <Button
             onClick={buyCourse}

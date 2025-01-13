@@ -25,7 +25,7 @@ const ProgressButton = ({
   const onClick = async () => {
     try {
       setIsLoading(true);
-      await axios.post(`/api/courses/${courseId}/sections/${sectionId}/progress`, {
+      axios.post(`/api/courses/${courseId}/sections/${sectionId}/progress`, {
         isCompleted: !isCompleted,
       });
       toast.success("Progress updated!");

@@ -1,17 +1,28 @@
 "use client";
 import { useEffect, useState } from "react"; // Import useEffect and useState
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 import Image from "next/image";
 import { UserButton } from "@clerk/nextjs";
 import { useAuth } from "@clerk/clerk-react";
 import Loginbut from "../Loginbut";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+
 
 const TopBar = () => {
   const { isSignedIn } = useAuth();
   const [isMounted, setIsMounted] = useState(false); // Track if component is mounted
   const router = useRouter();
+  const pathName = usePathname();
+
 
   useEffect(() => {
     setIsMounted(true); // Set mounted to true after first render
@@ -20,6 +31,14 @@ const TopBar = () => {
   const TopRoutes = [
     { label: "Instructor", path: "/instructor/courses" },
     { label: "Student", path: "/learning" }
+  ];
+
+  const sidebarRoutes = [
+    { label: "Courses", path: "/instructor/courses" },
+    {
+      label: "Performance",
+      path: "/instructor/performance",
+    },
   ];
 
   const [searchInput, setSearchInput] = useState("");
@@ -59,6 +78,36 @@ const TopBar = () => {
               {route.label}
             </Link>
           ))}
+        </div>
+        <div className="z-20 sm:hidden">
+          <Sheet>
+            <SheetTrigger>
+              <Menu className="w-5 h-5" />
+            </SheetTrigger>
+            <SheetContent className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4">
+              {TopRoutes.map((route) => (
+            <Link href={route.path} key={route.path} className="text-sm font-medium hover:text-[#003cb3]">
+              {route.label}
+            </Link>
+          ))}
+              </div>
+              
+              {pathName.startsWith("/instructor") && (
+                <div className="flex flex-col gap-4">
+                  {sidebarRoutes.map((route) => (
+                    <Link
+                      href={route.path}
+                      key={route.path}
+                      className="text-sm font-medium hover:text-[#FDAB04]"
+                    >
+                      {route.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </SheetContent>
+          </Sheet>
         </div>
         <div className="ml-4 py-2">
           {isMounted && ( // Render based on mounted state

@@ -2,13 +2,18 @@ import { db } from "@/lib/db";
 import { Course, Section } from "@prisma/client";
 import Link from "next/link";
 import { Progress } from "../ui/progress";
+import { auth } from "@clerk/nextjs/server";
 
 interface CourseSideBarProps {
   course: Course & { sections: Section[] };
   studentId: string;
 }
 
-const CourseSideBar = async ({ course, studentId }: CourseSideBarProps) => {
+const CourseSideBar = async ({ course }: Omit<CourseSideBarProps, 'studentId'>) => {
+  const { userId } = await auth()
+  if (!userId) {
+    return null; // Handle unauthorized access
+  }
   const publishedSections = await db.section.findMany({
     where: {
       courseId: course.id,
@@ -24,7 +29,7 @@ const CourseSideBar = async ({ course, studentId }: CourseSideBarProps) => {
   const purchase = await db.purchase.findUnique({
     where: {
       customerId_courseId: {
-        customerId: studentId,
+        customerId: userId,
         courseId: course.id,
       },
     },
@@ -32,18 +37,20 @@ const CourseSideBar = async ({ course, studentId }: CourseSideBarProps) => {
 
   const completedSections = await db.progress.count({
     where: {
-      studentId,
+      studentId: userId,
       sectionId: {
         in: publishedSectionIds,
       },
       isCompleted: true,
     },
   });
+  
 
-  const progressPercentage =
-    publishedSectionIds.length > 0
-      ? (completedSections / publishedSectionIds.length) * 100
-      : 0;
+
+
+
+  const progressPercentage =(completedSections / publishedSectionIds.length) * 100
+
 
   return (
     <div className="hidden md:flex flex-col w-64 bg-white border-r shadow-lg rounded-lg p-4">

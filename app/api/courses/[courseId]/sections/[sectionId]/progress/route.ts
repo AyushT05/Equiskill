@@ -37,36 +37,23 @@ export const POST = async (
       return new NextResponse("Section Not Found", { status: 404 });
     }
 
-    let progress = await db.progress.findUnique({
+    const progress = await db.progress.upsert({
       where: {
         studentId_sectionId: {
           studentId: userId,
           sectionId,
-        },
+        }
+      },
+      update: {
+        isCompleted,
+      },
+      create: {
+        studentId: userId,
+        sectionId,
+        isCompleted,
       },
     });
 
-    if (progress) {
-      progress = await db.progress.update({
-        where: {
-          studentId_sectionId: {
-            studentId: userId,
-            sectionId,
-          },
-        },
-        data: {
-          isCompleted,
-        },
-      });
-    } else {
-      progress = await db.progress.create({
-        data: {
-          studentId: userId,
-          sectionId,
-          isCompleted,
-        },
-      });
-    }
 
     return NextResponse.json(progress, { status: 200 });
   } catch (err) {
