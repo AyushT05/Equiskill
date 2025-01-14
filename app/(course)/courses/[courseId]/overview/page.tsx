@@ -41,10 +41,19 @@ const CourseOverview = async ({ params }: { params: Promise<{ courseId: string }
 
   return (
     <div className="container mx-auto p-6 bg-white shadow-md rounded-lg">
+      {/* Mobile Section Menu */}
+      <div className="block md:hidden mb-4">
+        <SectionMenu course={course} />
+      </div>
+
       <div className="flex flex-col md:flex-row gap-6">
         {/* Left Column: Course Image */}
-        <div className="flex-shrink-0">
-          <SectionMenu course={course}/>
+        <div className="w-full md:w-1/2 flex-shrink-0 relative">
+          {/* Desktop Section Menu */}
+          <div className="hidden md:block absolute top-0 left-0 z-10">
+            <SectionMenu course={course} />
+          </div>
+
           <Image
             src={course.imageUrl || "/image_placeholder.webp"}
             alt={course.title}
@@ -55,9 +64,9 @@ const CourseOverview = async ({ params }: { params: Promise<{ courseId: string }
         </div>
 
         {/* Right Column: Course Info */}
-        <div className="flex flex-col gap-4">
-          <h1 className="text-3xl font-bold text-gray-800">{course.title}</h1>
-          <p className="text-lg text-gray-600">{course.subtitle}</p>
+        <div className="w-full md:w-1/2 flex flex-col gap-4">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-800">{course.title}</h1>
+          <p className="text-base md:text-lg text-gray-600">{course.subtitle}</p>
 
           {/* Instructor Info */}
           <div className="flex items-center gap-4">
@@ -70,7 +79,7 @@ const CourseOverview = async ({ params }: { params: Promise<{ courseId: string }
             />
             <div>
               <p className="text-sm font-medium text-gray-500">Instructor</p>
-              <p className="text-lg font-bold text-gray-800">{instructor.fullName}</p>
+              <p className="text-base md:text-lg font-bold text-gray-800">{instructor.fullName}</p>
             </div>
           </div>
 
@@ -78,12 +87,12 @@ const CourseOverview = async ({ params }: { params: Promise<{ courseId: string }
           <div className="flex flex-col gap-2 text-gray-700">
             <div className="flex items-center gap-2">
               <p className="font-bold text-gray-800">Price:</p>
-              <p className="text-lg font-semibold text-gray-900">₹ {course.price}</p>
+              <p className="text-base md:text-lg font-semibold text-gray-900">₹ {course.price}</p>
             </div>
 
             <div className="flex items-center gap-2">
               <p className="font-bold text-gray-800">Level:</p>
-              <p className="text-lg font-semibold">{level?.name || "Beginner"}</p>
+              <p className="text-base md:text-lg font-semibold">{level?.name || "Beginner"}</p>
             </div>
           </div>
         </div>
@@ -91,9 +100,8 @@ const CourseOverview = async ({ params }: { params: Promise<{ courseId: string }
 
       {/* Course Description */}
       <div className="mt-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Course Description</h2>
-        {/* Matched font styles with subtitle */}
-        <div className="text-lg text-gray-600 leading-relaxed">
+        <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">Course Description</h2>
+        <div className="text-base md:text-lg text-gray-600 leading-relaxed">
           <ReadText value={course.description || "No description available."} />
         </div>
       </div>

@@ -28,6 +28,16 @@ const StyledWrapper = styled.div`
     position: relative;
   }
 
+  @media (max-width: 768px) {
+    button {
+      width: 4em;      /* Reduced width */
+      height: 2em;     /* Reduced height */
+      line-height: 1.8em;
+      margin: 10px;    /* Reduced margin */
+      font-size: 14px; /* Smaller font */
+    }
+  }
+
   button::before {
     position: absolute;
     content: "";
@@ -51,6 +61,7 @@ const StyledWrapper = styled.div`
   button:hover::before {
     top: -30px;
     left: -30px;
-  }`;
+  }
+`;
 
 export default Loginbut;
