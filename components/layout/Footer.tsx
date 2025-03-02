@@ -1,6 +1,7 @@
-"use client"
-import React from 'react';
-import SocialMediaButtons from './SocialMediaButtons';
+"use client";
+import React from "react";
+import Image from "next/image";
+import SocialMediaButtons from "./SocialMediaButtons";
 
 const Footer = () => {
   return (
@@ -8,7 +9,13 @@ const Footer = () => {
       <div className="flex flex-col lg:flex-row items-center justify-between px-4 lg:px-16">
         {/* Left Section - Logo */}
         <div className="flex items-center mb-4 lg:mb-0">
-          <img src="/Glitch Guardians.png" alt="Equiskill AI Logo" className="h-10" />
+          <Image 
+            src="/Glitch Guardians.png" 
+            alt="Equiskill AI Logo" 
+            width={120}  // Adjust width as needed
+            height={40}  // Adjust height as needed
+            priority  // Ensures LCP optimization
+          />
         </div>
 
         {/* Center Section - Footer Text */}
