@@ -5,7 +5,7 @@ import { Album, BookOpen } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const CourseCard = async ({ course }: { course: Course }) => {
+const languageCourseCard = async ({ course }: { course: Course }) => {
   const client = await clerkClient();
   const instructor = await client.users.getUser(course.instructorId);
 
@@ -100,4 +100,4 @@ const CourseCard = async ({ course }: { course: Course }) => {
   );
 };
 
-export default CourseCard;
+export default languageCourseCard;

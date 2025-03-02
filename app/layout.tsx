@@ -34,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider allowedRedirectOrigins={['http://localhost:3010']}>
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} ${montserrat.className} antialiased`} // Apply Montserrat font here

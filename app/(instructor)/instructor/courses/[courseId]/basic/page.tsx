@@ -41,11 +41,14 @@ const CourseBasics = async ({ params }: { params: { courseId: string } }) => {
   })
 
   const levels = await db.level.findMany()
+  const languages = await db.language.findMany()
+  
   const requiredFields = [
     course.title,
     course.description,
     course.categoryId,
     course.subCategoryId,
+    course.languageId,
     course.levelId,
     course.imageUrl,
     course.price,
@@ -75,6 +78,11 @@ const CourseBasics = async ({ params }: { params: { courseId: string } }) => {
         label: level.name,
         value: level.id,
       }))}
+      languages={languages.map((language) => ({
+        label: language.name,
+        value: language.id,
+      }))}
+     
       isCompleted={isCompleted}
        />
     </div>

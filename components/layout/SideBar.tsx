@@ -1,5 +1,5 @@
 "use client"
-import { BarChart4, MonitorPlay } from "lucide-react"; // Correctly import only icons
+import { BarChart4, MessageCircle, MessageCircleQuestion, MonitorPlay } from "lucide-react"; // Correctly import only icons
 import Link from "next/link"; // Import Link from next/link
 import { usePathname } from "next/navigation";
 
@@ -7,7 +7,8 @@ const SideBar = () => {
     const pathname = usePathname();
     const sidebarRoutes = [
         { icon: <MonitorPlay />, label: "Courses", path: "/instructor/courses" },
-        { icon: <BarChart4 />, label: "Performance", path: "/instructor/performance" }
+        { icon: <BarChart4 />, label: "Performance", path: "/instructor/performance" },
+        { icon: <MessageCircleQuestion />, label: "Chat", path: "http://localhost:3010" }
     ];
 
     return (

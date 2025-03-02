@@ -26,17 +26,30 @@ const CourseOverview = async ({ params }: { params: Promise<{ courseId: string }
   if (!course) {
     return redirect("/");
   }
+
   const client = await clerkClient();
   const instructor = await client.users.getUser(course.instructorId);
 
   let level;
-
+  let language;
+  if(course.languageId) {
+    language = await db.language.findUnique({
+      where: {
+        id: course.languageId,
+      },
+    });
+  }
   if (course.levelId) {
     level = await db.level.findUnique({
       where: {
         id: course.levelId,
       },
     });
+  }
+
+  // Check if instructor data is valid
+  if (!instructor) {
+    return <div>Error loading instructor information.</div>; // Handle error gracefully
   }
 
   return (
@@ -93,6 +106,11 @@ const CourseOverview = async ({ params }: { params: Promise<{ courseId: string }
             <div className="flex items-center gap-2">
               <p className="font-bold text-gray-800">Level:</p>
               <p className="text-base md:text-lg font-semibold">{level?.name || "Beginner"}</p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <p className="font-bold text-gray-800">Language Taught: </p>
+              <p className="text-base md:text-lg font-semibold">{language?.name || "Beginner"}</p>
             </div>
           </div>
         </div>

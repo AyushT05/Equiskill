@@ -40,7 +40,9 @@ const formSchema = z.object({
   subCategoryId: z.string().min(1, {
     message: "Sub-category is required",
   }),
+  email: z.string().email("Invalid email format").optional(),
   levelId: z.string().optional(),
+  languageId: z.string().optional(),
   imageUrl: z.string().optional(),
   price: z.coerce.number().optional(),
 })
@@ -54,10 +56,12 @@ interface EditCourseFormProps {
     subCategories: { label: string, value: string }[]
   }[];
   levels: { label: string, value: string }[];
+  languages: { label: string, value: string }[];
+
   isCompleted: boolean;
 }
 
-const EditCourseForm = ({ course, categories, levels, isCompleted }: EditCourseFormProps) => {
+const EditCourseForm = ({ course, categories, levels, languages, isCompleted }: EditCourseFormProps) => {
   const router = useRouter();
   const pathname = usePathname();
   // 1. Define your form.
@@ -70,8 +74,10 @@ const EditCourseForm = ({ course, categories, levels, isCompleted }: EditCourseF
       categoryId: course.categoryId,
       subCategoryId: course.subCategoryId,
       levelId: course.levelId || "",
+      languageId: course.languageId || "",
       imageUrl: course.imageUrl || "",
       price: course.price || undefined,
+      email: course.email || "",
     },
   })
 
@@ -104,13 +110,13 @@ const EditCourseForm = ({ course, categories, levels, isCompleted }: EditCourseF
           ))}
         </div>
         <div className="flex gap-4 items-start">
-        <PublishButton
+          <PublishButton
             disabled={!isCompleted}
             courseId={course.id}
             isPublished={course.isPublished}
             page="Course"
           />
-          <Delete item="course" courseId={course.id}/>
+          <Delete item="course" courseId={course.id} />
         </div>
       </div>
       <Form {...form}>
@@ -144,6 +150,21 @@ const EditCourseForm = ({ course, categories, levels, isCompleted }: EditCourseF
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email (Chat with your students)</FormLabel>
+                <FormControl>
+                  <Input type="email" placeholder="Ex: instructor@example.com" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
 
           <FormField
             control={form.control}
@@ -217,6 +238,23 @@ const EditCourseForm = ({ course, categories, levels, isCompleted }: EditCourseF
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="languageId"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>
+                    Language <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <ComboBox options={languages} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
 
 
           </div>

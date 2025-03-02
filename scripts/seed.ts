@@ -119,7 +119,7 @@ async function main() {
         },
       },
       {
-        name: "Engineering",
+        name: "University",
         subCategories: {
           create: [
             { name: "CS / IT" },
@@ -152,6 +152,24 @@ async function main() {
         { name: "Intermediate" },
         { name: "Expert" },
         { name: "All levels" },
+      ],
+    });
+
+    await database.language.createMany({
+      data: [
+        { name: "English" },
+        { name: "Hindi" },
+        { name: "Kannada" },
+        { name: "Tamil" },
+        { name: "Telugu" },
+        { name: "Malayalam" },
+        { name: "Marathi" },
+        { name: "Gujarati" },
+        { name: "Bengali" },
+        { name: "Punjabi" },
+        { name: "Odia" },
+        {name: "Urdu"},
+        {name: "Others"},
       ],
     });
 

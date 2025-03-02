@@ -1,8 +1,10 @@
+
 import { db } from "@/lib/db";
 import { Course, Section } from "@prisma/client";
 import Link from "next/link";
 import { Progress } from "../ui/progress";
 import { auth } from "@clerk/nextjs/server";
+import ChatNow from "../ui/ChatNow";// Import your ChatNow component
 
 interface CourseSideBarProps {
   course: Course & { sections: Section[] };
@@ -10,10 +12,11 @@ interface CourseSideBarProps {
 }
 
 const CourseSideBar = async ({ course }: Omit<CourseSideBarProps, 'studentId'>) => {
-  const { userId } = await auth()
+  const { userId } = await auth();
   if (!userId) {
     return null; // Handle unauthorized access
   }
+
   const publishedSections = await db.section.findMany({
     where: {
       courseId: course.id,
@@ -44,13 +47,8 @@ const CourseSideBar = async ({ course }: Omit<CourseSideBarProps, 'studentId'>) 
       isCompleted: true,
     },
   });
-  
 
-
-
-
-  const progressPercentage =(completedSections / publishedSectionIds.length) * 100
-
+  const progressPercentage = (completedSections / publishedSectionIds.length) * 100;
 
   return (
     <div className="hidden md:flex flex-col w-64 bg-white border-r shadow-lg rounded-lg p-4">
@@ -85,6 +83,14 @@ const CourseSideBar = async ({ course }: Omit<CourseSideBarProps, 'studentId'>) 
           </Link>
         ))}
       </nav>
+
+      {/* ChatNow Button */}
+      {purchase && (
+        <div className="mt-auto">
+          <ChatNow instructorEmail={course.email || "No email available"} />
+
+        </div>
+      )}
     </div>
   );
 };

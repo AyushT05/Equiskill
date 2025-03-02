@@ -93,7 +93,13 @@ const SectionsDetails = ({
       {/* Resources Section */}
       <div className="mt-8">
         <h2 className="text-xl font-bold text-gray-800 mb-4">Resources</h2>
-        {resources.length > 0 ? (
+        {!purchase ? (
+          resources.length > 0 ? (
+            <p className="text-gray-600">You need to purchase the course to gain access to the resource.</p>
+          ) : (
+            <p className="text-gray-600">You need to purchase the course to gain access to the resource.</p>
+          )
+        ) : resources.length > 0 ? (
           <div className="flex flex-col gap-4">
             {resources.map((resource) => (
               <Link
