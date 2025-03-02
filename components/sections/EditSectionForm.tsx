@@ -10,7 +10,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { ArrowLeft, Loader2, Trash } from "lucide-react";
-import MuxPlayer from "@mux/mux-player-react";
+
 
 import { Button } from "@/components/ui/button";
 import {
