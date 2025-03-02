@@ -1,4 +1,3 @@
-
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
@@ -27,7 +26,7 @@ export const PUT = async (
       return new NextResponse("Course not found", { status: 404 });
     }
 
-    for (let item of list) {
+    for (const item of list) {
       await db.section.update({
         where: {
           id: item.id,

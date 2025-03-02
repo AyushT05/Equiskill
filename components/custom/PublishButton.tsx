@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -34,9 +33,11 @@ const PublishButton = ({
 
     try {
       setIsLoading(true);
-      isPublished
-        ? await axios.post(`${url}/unpublish`)
-        : await axios.post(`${url}/publish`);
+      if (isPublished) {
+        await axios.post(`${url}/unpublish`);
+      } else {
+        await axios.post(`${url}/publish`);
+      }
 
       toast.success(`${page} ${isPublished ? "unpublished" : "published"}`);
       router.refresh();
@@ -57,7 +58,13 @@ const PublishButton = ({
       disabled={disabled || isLoading}
       onClick={onClick}
     >
-      {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : isPublished ? "Unpublish" : "Publish"}
+      {isLoading ? (
+        <Loader2 className="h-4 w-4 animate-spin" />
+      ) : isPublished ? (
+        "Unpublish"
+      ) : (
+        "Publish"
+      )}
     </Button>
   );
 };

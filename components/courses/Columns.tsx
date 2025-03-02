@@ -2,7 +2,7 @@
 
 import { Course } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
-import { Pencil } from "lucide-react";
+
 import Link from "next/link";
 import { ArrowUpDown } from "lucide-react";
 

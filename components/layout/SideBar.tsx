@@ -1,5 +1,5 @@
 "use client"
-import { BarChart4, MessageCircle, MessageCircleQuestion, MonitorPlay } from "lucide-react"; // Correctly import only icons
+import { BarChart4, MessageCircleQuestion, MonitorPlay } from "lucide-react"; // Correctly import only icons
 import Link from "next/link"; // Import Link from next/link
 import { usePathname } from "next/navigation";
 

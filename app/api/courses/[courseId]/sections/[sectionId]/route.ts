@@ -45,20 +45,11 @@ export const POST = async (
     });
 
     if (values.videoUrl) {
-      const existingMuxData = await db.muxData.findFirst({
-        where: {
-          sectionId,
-        },
-      });
-
-      
-
-      const asset = await video.assets.create({
+      await video.assets.create({
         input: values.videoUrl,
         playback_policy: ["public"],
         test: false,
       });
-
     }
 
     return NextResponse.json(section, { status: 200 });
@@ -68,7 +59,8 @@ export const POST = async (
   }
 };
 
-export const DELETE = async (req: NextRequest,
+export const DELETE = async (
+  req: NextRequest,
   { params }: { params: Promise<{ courseId: string; sectionId: string }> }
 ) => {
   try {
@@ -95,21 +87,11 @@ export const DELETE = async (req: NextRequest,
       where: {
         id: sectionId,
         courseId,
-      }
+      },
     });
 
     if (!section) {
       return new NextResponse("Section Not Found", { status: 404 });
-    }
-
-    if (section.videoUrl) {
-      const existingMuxData = await db.muxData.findFirst({
-        where: {
-          sectionId,
-        },
-      });
-
-      
     }
 
     await db.section.delete({
@@ -142,5 +124,4 @@ export const DELETE = async (req: NextRequest,
     console.log("[sectionId_DELETE]", err);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
-}
-
+};

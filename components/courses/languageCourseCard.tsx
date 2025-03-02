@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import { clerkClient } from "@clerk/nextjs/server";
 import { Course } from "@prisma/client";
-import { Album, BookOpen } from "lucide-react";
+import { Album } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 

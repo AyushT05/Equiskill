@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
+  
   FormField,
   FormItem,
   FormLabel,
@@ -21,9 +21,9 @@ import FileUpload from "../custom/FileUpload"
 import Link from "next/link"
 import axios from "axios"
 import toast from "react-hot-toast"
-import router from "next/router"
+
 import { usePathname, useRouter } from "next/navigation"
-import Trash from "./Trash"
+
 import { Loader2 } from "lucide-react"
 import Delete from "../custom/Delete"
 import PublishButton from "../custom/PublishButton"
