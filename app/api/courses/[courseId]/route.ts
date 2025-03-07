@@ -29,11 +29,11 @@ export const PATCH = async (req: NextRequest, { params }: { params: Promise<{ co
 
 export const DELETE = async (
     req: NextRequest,
-    { params }: { params: { courseId: string } }
+    { params }: { params: Promise<{ courseId: string }> }
   ) => {
     try {
       const { userId } = await auth();
-      const { courseId } = params;
+      const { courseId } = await params;
   
       if (!userId) {
         return new NextResponse("Unauthorized", { status: 401 });
