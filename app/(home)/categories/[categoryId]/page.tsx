@@ -3,23 +3,20 @@ import CourseCard from "@/components/courses/CourseCard";
 import Categories from "@/components/custom/Categories";
 import { db } from "@/lib/db";
 
-// Define the expected props for the component
-interface CategoryPageProps {
-  params: { categoryId: string };
-}
+const CoursesByCategory = async ({ params }: { params: Promise<{ categoryId: string }> }) => {
+  const { categoryId } = await params; // Await the params to get categoryId
 
-const CoursesByCategory = async ({ params }: CategoryPageProps) => {
   // Fetch categories
   const categories = await db.category.findMany({
     orderBy: { name: "asc" },
   });
 
   // Fetch courses based on the categoryId
-  const courses = await getCoursesByCategory(params.categoryId);
+  const courses = await getCoursesByCategory(categoryId);
 
   return (
     <div className="md:mt-5 md:px-10 xl:px-16 pb-16">
-      <Categories categories={categories} selectedCategory={params.categoryId} />
+      <Categories categories={categories} selectedCategory={categoryId} />
       <div className="flex flex-wrap gap-7 justify-center">
         {courses.map((course) => (
           <CourseCard key={course.id} course={course} />
