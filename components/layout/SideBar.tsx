@@ -8,7 +8,7 @@ const SideBar = () => {
     const sidebarRoutes = [
         { icon: <MonitorPlay />, label: "Courses", path: "/instructor/courses" },
         { icon: <BarChart4 />, label: "Performance", path: "/instructor/performance" },
-        { icon: <MessageCircleQuestion />, label: "Chat", path: "http://localhost:3010" }
+        { icon: <MessageCircleQuestion />, label: "Chat", path: "https://equiskillchat.vercel.app" }
     ];
 
     return (

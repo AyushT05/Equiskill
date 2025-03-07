@@ -21,7 +21,7 @@ const ChatNow = ({ instructorEmail }: ChatNowProps) => {
 
   const handleSendMessage = () => {
     // Redirect to the specified URL when "Understood" is clicked
-    window.location.href = 'http://localhost:3010';
+    window.location.href = 'https://equiskillchat.vercel.app';
   };
 
   return (
