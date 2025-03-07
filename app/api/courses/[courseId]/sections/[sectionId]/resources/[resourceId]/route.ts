@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (
   req: NextRequest,
-  { params }: { params: { courseId: string; sectionId: string, resourceId: string } }
+  { params }: { params: Promise<{ courseId: string; sectionId: string, resourceId: string }> }
 ) => {
   try {
     const { userId } = await auth()
@@ -13,7 +13,7 @@ export const POST = async (
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { courseId, sectionId, resourceId } = params;
+    const { courseId, sectionId, resourceId } = await params;
 
     const course = await db.course.findUnique({
       where: {
