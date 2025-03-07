@@ -1,13 +1,11 @@
 import { db } from "@/lib/db";
 import LanguageCourseCard from "@/components/courses/CourseLangCard";
 
-interface Params {
-    languageId: string;
-}
+const CoursesByLanguage = async ({ params }: { params: Promise<{ languageId: string }> }) => {
+    // Await the params to resolve the languageId
+    const { languageId } = await params;
 
-const CoursesByLanguage = async ({ params }: { params: Params }) => {
-    const { languageId } = params;
-
+    // Fetch courses for the given languageId
     const courses = await db.course.findMany({
         where: {
             languageId: languageId,
@@ -19,12 +17,14 @@ const CoursesByLanguage = async ({ params }: { params: Params }) => {
         },
     });
 
+    // Fetch the language details
     const language = await db.language.findUnique({
         where: {
             id: languageId,
         },
     });
 
+    // Handle case where language is not found
     if (!language) {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
