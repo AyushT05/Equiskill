@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from 'next/navigation';
 
-const CourseBasics = async ({ params }: { params: { courseId: string } }) => {
+const CourseBasics = async ({ params }: { params: Promise<{ courseId: string }> }) => {
   // Await the auth function to get the userId
   const { userId } = await auth();
 
