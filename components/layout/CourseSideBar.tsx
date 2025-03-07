@@ -11,7 +11,8 @@ interface CourseSideBarProps {
   studentId: string;
 }
 
-const CourseSideBar = async ({ course }: Omit<CourseSideBarProps, 'studentId'>) => {
+
+const CourseSideBar = async ({ course, studentId }: CourseSideBarProps) => {
   const { userId } = await auth();
   if (!userId) {
     return null; // Handle unauthorized access
