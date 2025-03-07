@@ -6,19 +6,21 @@ import { db } from "@/lib/db";
 const CoursesByCategory = async ({
   params,
 }: {
-  params: { categoryId: string };
+  params: Promise<{ categoryId: string }>;
 }) => {
+  const resolvedParams = await params; // Await the promise
+
   const categories = await db.category.findMany({
     orderBy: {
       name: "asc",
     },
   });
 
-  const courses = await getCoursesByCategory(params.categoryId);
+  const courses = await getCoursesByCategory(resolvedParams.categoryId);
 
   return (
     <div className="md:mt-5 md:px-10 xl:px-16 pb-16">
-      <Categories categories={categories} selectedCategory={params.categoryId} />
+      <Categories categories={categories} selectedCategory={resolvedParams.categoryId} />
       <div className="flex flex-wrap gap-7 justify-center">
         {courses.map((course) => (
           <CourseCard key={course.id} course={course} />
@@ -27,5 +29,3 @@ const CoursesByCategory = async ({
     </div>
   );
 };
-
-export default CoursesByCategory;
