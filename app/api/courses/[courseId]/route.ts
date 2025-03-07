@@ -5,10 +5,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 
 
-export const PATCH = async (req: NextRequest, { params }: { params: { courseId: string } }) => {
+export const PATCH = async (req: NextRequest, { params }: { params: Promise<{ courseId: string }> }) => {
     try {
         const { userId } = await auth()
-        const { courseId } = params;
+        const { courseId } = await params;
         const values = await req.json();
         if (!userId) {
             return new Response("Unauthorized", { status: 401 });
