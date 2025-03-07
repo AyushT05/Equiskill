@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const InstructorChat = () => {
   const handleRedirect = () => {
-    window.location.href = "http://localhost:3010";
+    window.location.href = "https://equiskillchat.vercel.app";
   };
 
   return (
