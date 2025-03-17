@@ -4,6 +4,7 @@ import Categories from "@/components/custom/Categories";
 import CourseCard from "@/components/courses/CourseCard";
 import WelcomeMessage from "@/components/WelcomeMessage";
 import LanguageCard from "@/components/LanguageCard";
+import ChatWidget from "@/components/support";
 
 export default async function Home() {
   const predefinedOrder = [
@@ -74,6 +75,7 @@ export default async function Home() {
           </div>
         ))}
       </div>
+      <ChatWidget />
     </div>
   );
 }

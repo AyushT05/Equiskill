@@ -56,7 +56,7 @@ const LearningPage = async () => {
             </Link>
 
             {/* AI Course Generator */}
-            <Link href="https://equiskilllms.vercel.app/dashboard" className="block rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300 transform hover:scale-[1.02]">
+            <Link href="https://equiskillcourse.vercel.app/dashboard" className="block rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300 transform hover:scale-[1.02]">
               <div className="bg-white p-6 border border-gray-200 rounded-lg">
                 <h2 className="text-2xl font-semibold text-gray-800 flex items-center gap-2 mb-2">
                   <GraduationCap className="w-6 h-6 text-green-600" />
