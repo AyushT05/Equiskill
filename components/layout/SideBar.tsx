@@ -1,5 +1,5 @@
 "use client"
-import { BarChart4, MessageCircleQuestion, MonitorPlay } from "lucide-react"; // Correctly import only icons
+import { BarChart4, GraduationCap, MessageCircleQuestion, MonitorPlay } from "lucide-react"; // Correctly import only icons
 import Link from "next/link"; // Import Link from next/link
 import { usePathname } from "next/navigation";
 
@@ -8,7 +8,8 @@ const SideBar = () => {
     const sidebarRoutes = [
         { icon: <MonitorPlay />, label: "Courses", path: "/instructor/courses" },
         { icon: <BarChart4 />, label: "Performance", path: "/instructor/performance" },
-        { icon: <MessageCircleQuestion />, label: "Chat", path: "https://equiskillchat.vercel.app" }
+        { icon: <MessageCircleQuestion />, label: "Chat", path: "https://equiskillchat.vercel.app" },
+        { icon: <GraduationCap/>, label: "AI Course", path: "/instructor/ai-course" }
     ];
 
     return (

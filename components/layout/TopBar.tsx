@@ -25,7 +25,8 @@ const TopBar = () => {
 
   const TopRoutes = [
     { label: "Instructor", path: "/instructor/courses" },
-    { label: "Student", path: "/student" }
+    { label: "Student", path: "/student" },
+    { label: "Knowledge Cafe", path: "http://localhost:5732/main"}
   ];
 
   const sidebarRoutes = [
