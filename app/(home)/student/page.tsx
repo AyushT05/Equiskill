@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { BookOpen, GraduationCap } from "lucide-react";
+import { BookOpen, GraduationCap, FileText } from "lucide-react";
 
 const LearningPage = async () => {
   const { userId } = await auth();
@@ -40,7 +40,7 @@ const LearningPage = async () => {
           <h1 className="text-3xl font-bold text-gray-800">AI Learning Tools</h1>
           <p className="text-lg text-gray-600 mt-2">Enhance your learning with AI-powered tools.</p>
           
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* AI Exam Prep Tool */}
             <Link href="https://equiskillstudy.vercel.app/dashboard" className="block rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300 transform hover:scale-[1.02]">
               <div className="bg-white p-6 border border-gray-200 rounded-lg">
@@ -65,6 +65,20 @@ const LearningPage = async () => {
                 <p className="text-gray-600">Create custom courses effortlessly using our AI Course Generator.</p>
                 <button className="mt-4 w-full px-4 py-2 bg-[#003cb3] text-white font-semibold rounded-lg hover:bg-[#335fd1] transition">
                   Go to AI Course Generator
+                </button>
+              </div>
+            </Link>
+
+            {/* AI PDF Note Taker */}
+            <Link href="http://localhost:4019/dashboard" className="block rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300 transform hover:scale-[1.02]">
+              <div className="bg-white p-6 border border-gray-200 rounded-lg">
+                <h2 className="text-2xl font-semibold text-gray-800 flex items-center gap-2 mb-2">
+                  <FileText className="w-6 h-6 text-purple-600" />
+                  AI PDF Note Taker
+                </h2>
+                <p className="text-gray-600">Easily summarize and take notes from PDFs using AI.</p>
+                <button className="mt-4 w-full px-4 py-2 bg-[#003cb3] text-white font-semibold rounded-lg hover:bg-[#335fd1] transition">
+                  Go to AI PDF Note Taker
                 </button>
               </div>
             </Link>
@@ -95,7 +109,6 @@ const LearningPage = async () => {
             </div>
           )}
         </div>
-
       </div>
     </div>
   );
